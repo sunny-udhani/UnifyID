@@ -7,8 +7,6 @@ import java.util.List;
 
 public class WAVGenerator {
     private List<Integer> randomInts = new ArrayList<>();
-
-    private int subChunkSize1;
     private int subChunkSize2;
     private double[] rawData;
 
@@ -41,7 +39,7 @@ public class WAVGenerator {
         }
     }
 
-    public void generateRawData()
+    public void generateFrequencyData()
     {
         try
         {
@@ -68,7 +66,7 @@ public class WAVGenerator {
         }
     }
 
-    public void createWAV(){
+    public void generateWAV(){
         File f = new File("./sounds/out.wav");
         try
         {
@@ -77,7 +75,7 @@ public class WAVGenerator {
             {
                 FileOutputStream fos = new FileOutputStream("./sounds/out.wav");
                 DataOutputStream dos = new DataOutputStream(fos);
-                this.generateRawData();
+                this.generateFrequencyData();
                 int chunkSize = 36 + this.subChunkSize2;
                 dos.writeBytes("RIFF");
                 dos.writeInt(chunkSize);
@@ -87,7 +85,7 @@ public class WAVGenerator {
                 dos.writeShort(1);
                 dos.writeShort(1);
                 dos.writeInt(44100);
-                dos.writeInt(4410*1*16/8);
+                dos.writeInt(44100*1*16/8);
                 dos.writeShort(1*16/8);
                 dos.writeShort(16);
                 dos.writeBytes("data");
@@ -117,8 +115,8 @@ public class WAVGenerator {
     public static void main(String[] args) throws IOException {
 
         WAVGenerator foo = new WAVGenerator();
-        foo.populateData(10000);
+        foo.populateData(100);
         if(foo.randomInts.size() > 0)
-        foo.createWAV();
+        foo.generateWAV();
     }
 }
